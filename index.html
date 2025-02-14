@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Valentines Day</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .gradient-background {
+      background: rgb(255, 208, 229);
+      background: linear-gradient(180deg, rgba(255, 208, 229, 1) 0%, rgba(255, 232, 242, 1) 36%, rgba(255, 255, 255, 1) 100%);
+    }
+
+    .bounce2 {
+      animation: bounce2 2s ease infinite;
+    }
+
+    @keyframes bounce2 {
+      0%, 20%, 50%, 80%, 100% {
+        transform: translateY(0);
+      }
+      40% {
+        transform: translateY(-20px);
+      }
+      60% {
+        transform: translateY(-10px);
+      }
+    }
+
+    /* Responsive styles */
+    #imageDisplay {
+      width: 80vw; /* 80% de la largeur de la fenêtre */
+      max-width: 400px; /* Largeur maximale pour les grands écrans */
+      height: auto; /* Hauteur ajustée automatiquement */
+      border-radius: 10px;
+    }
+
+    #valentineQuestion {
+      font-size: clamp(1.5rem, 6vw, 3rem); /* Taille de police fluide */
+      text-align: center;
+      margin: 20px 0;
+    }
+
+    #responseButtons {
+      display: flex;
+      gap: 20px;
+      justify-content: center;
+      align-items: center;
+    }
+
+    #yesButton, #noButton {
+      font-size: clamp(1rem, 4vw, 1.5rem); /* Taille de police fluide */
+      padding: 10px 20px;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    #yesButton {
+      background-color: green;
+      color: white;
+    }
+
+    #noButton {
+      background-color: red;
+      color: white;
+    }
+
+    /* Media Queries pour des ajustements spécifiques */
+    @media (max-width: 768px) {
+      #imageDisplay {
+        width: 90vw; /* Augmenter la largeur sur les petits écrans */
+      }
+
+      #valentineQuestion {
+        font-size: clamp(1.2rem, 8vw, 2rem); /* Ajuster la taille de police */
+      }
+
+      #yesButton, #noButton {
+        padding: 8px 16px; /* Réduire le padding sur les petits écrans */
+      }
+    }
+
+    @media (max-width: 480px) {
+      #imageDisplay {
+        width: 95vw; /* Encore plus large sur les très petits écrans */
+      }
+
+      #valentineQuestion {
+        font-size: clamp(1rem, 10vw, 1.5rem); /* Ajuster la taille de police */
+      }
+
+      #yesButton, #noButton {
+        padding: 6px 12px; /* Réduire encore le padding */
+      }
+    }
+  </style>
+</head>
+<body class="gradient-background">
+  <div class="flex items-center justify-center h-screen">
+    <div class="flex flex-col items-center p-4">
+      <img id="imageDisplay" src="./images/image1.gif" alt="Cute kitten with flowers" />
+      <h2 id="valentineQuestion">Will you be my Valentine?</h2>
+      <div id="responseButtons">
+        <button id="yesButton" class="bounce2">Yes</button>
+        <button id="noButton">No</button>
+      </div>
+    </div>
+  </div>
+
+  <script type="module">
+    import confetti from 'https://cdn.skypack.dev/canvas-confetti';
+    const yesButton = document.getElementById('yesButton');
+    const noButton = document.getElementById('noButton');
+    const imageDisplay = document.getElementById('imageDisplay');
+    const valentineQuestion = document.getElementById('valentineQuestion');
+    const responseButtons = document.getElementById('responseButtons');
+  
+    let noClickCount = 0;
+    let buttonHeight = 48; // Starting height in pixels
+    let buttonWidth = 80;
+    let fontSize = 20; // Starting font size in pixels
+    const imagePaths = [
+      "./images/image1.gif",
+      "./images/image2.gif",
+      "./images/image3.gif",
+      "./images/image4.gif",
+      "./images/image5.gif",
+      "./images/image6.gif",
+      "./images/image7.gif"
+    ];
+  
+    noButton.addEventListener('click', function() {
+      if (noClickCount < 5) {
+        noClickCount++;
+        imageDisplay.src = imagePaths[noClickCount];
+        buttonHeight += 35; // Increase height by 5px on each click
+        buttonWidth += 35;
+        fontSize += 25; // Increase font size by 1px on each click
+        yesButton.style.height = `${buttonHeight}px`; // Update button height
+        yesButton.style.width = `${buttonWidth}px`;
+        yesButton.style.fontSize = `${fontSize}px`; // Update font size
+        if (noClickCount < 6) {
+          noButton.textContent = ["No", "Are you sure?", "Pookie please", "Don't do this to me :(", "You're breaking my heart", "I'm gonna cry..."][noClickCount];
+        }
+      }
+    });
+  
+    yesButton.addEventListener('click', () => {
+      imageDisplay.src = './images/image7.gif'; // Change to image7.gif
+      valentineQuestion.textContent = "Ouuuhhhhrraaahhhhhhhh!!!!"; // Change the question text
+      
+      // Ajouter un nouveau texte après "Ouuuhhhhrraaahhhhhhhh!!!!"
+      const newText = document.createElement('p');
+      newText.textContent = "Je t'aime plus que tout au monde !";
+      newText.style.fontSize = 'clamp(1rem, 4vw, 1.5rem)'; // Taille de police fluide
+      newText.style.textAlign = 'center';
+      newText.style.marginTop = '10px';
+      newText.style.color = '#bd1e59'; // Couleur du texte
+      
+      // Ajouter le nouveau texte après la question
+      valentineQuestion.insertAdjacentElement('afterend', newText);
+      
+      responseButtons.style.display = 'none'; // Hide both buttons
+      confetti(); // Trigger confetti animation
+    });
+  </script>  
+</body>
+</html>
